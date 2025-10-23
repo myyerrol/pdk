@@ -50,7 +50,7 @@ RELEASE_FILES := ics55_LLSC_H7CH_liberty.tar.bz2 \
                  ics55_LLSC_H7CR_liberty.tar.bz2
 
 EXTR_DIR_PARENT := $(DIR)/ics55_LLSC_H7C_V1p10C100
-EXTR_DIR        := $(patsubst %_liberty.tar.bz2, $(EXTR_DIR_PARENT)/%/, $(RELEASE_FILES))
+EXTR_DIR        := $(patsubst %_liberty.tar.bz2, $(EXTR_DIR_PARENT)/%/liberty, $(RELEASE_FILES))
 
 .PHONY: download unzip clean-dir
 
@@ -72,10 +72,10 @@ $(RELEASE_FILES):
 		curl -L -o $(@) "$$RELEASE_URL" && echo "Download completed: $(@)"; \
 	fi
 
-$(EXTR_DIR_PARENT)/%/: %_liberty.tar.bz2
-	@echo "\nExtracting: $< -> $@"
+$(EXTR_DIR_PARENT)/%/liberty: %_liberty.tar.bz2
+	@echo "\nExtracting: $< -> $(EXTR_DIR_PARENT)/$*/"
 	@mkdir -p $@
-	@tar -xjvf $< -C $@
+	@tar -xjvf $< -C $(EXTR_DIR_PARENT)/$*/
 	@touch $@
 
 download: $(RELEASE_FILES)
