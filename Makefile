@@ -66,7 +66,11 @@ $(RELEASE_FILES):
 		exit 1; \
 	fi; \
 	echo "Downloading $(@)"; \
-	curl -L -o $(@) "$$RELEASE_URL" && echo "Download completed: $(@)"
+	if [ "$(TOOL)" = "wget" ]; then \
+		wget -O $(@) "$$RELEASE_URL" && echo "Download completed: $(@)"; \
+	else \
+		curl -L -o $(@) "$$RELEASE_URL" && echo "Download completed: $(@)"; \
+	fi
 
 $(EXTR_DIR_PARENT)/%/: %_liberty.tar.bz2
 	@echo "\nExtracting: $< -> $@"
